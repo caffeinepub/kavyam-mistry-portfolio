@@ -1,0 +1,29 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix broken user registration (username/password)",
+  "requirements": [
+    {
+      "id": "REQ-2",
+      "summary": "Fix the frontend registration flow so that backend errors are correctly caught and surfaced, and successful registration redirects to login",
+      "acceptanceCriteria": [
+        "Successful registration redirects the user to the login page",
+        "Backend error responses (e.g., username already taken) display a specific, readable error message instead of a generic fallback",
+        "Network or canister errors are caught and display a user-friendly error message",
+        "The registration button is disabled while the request is in-flight to prevent duplicate submissions"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Fix the useRegisterUser mutation hook to properly extract and surface backend error messages from the RegisterResult type. When the backend returns { __kind__: 'error', error: string }, extract the error string and throw it so React Query's onError handler can display it. Ensure network errors and canister traps are caught and wrapped in user-friendly error messages. Verify that the mutation properly handles the RegisterResult discriminated union type from backend.d.ts."
+        },
+        {
+          "path": "frontend/src/pages/Registration.tsx",
+          "operation": "modify",
+          "description": "Update the Registration component to handle mutation states correctly. Display specific error messages from the backend (e.g., 'Username already taken') instead of generic fallback text. Add loading state to disable the registration button while the request is in-flight to prevent duplicate submissions. On successful registration (when the backend returns { __kind__: 'success' }), redirect the user to the login page using window.location or navigation. Ensure the reserved owner username 'Akgamer4354' remains blocked on the frontend as an additional safeguard. Improve error message clarity for network failures and backend errors."
+        }
+      ]
+    }
+  ]
+}

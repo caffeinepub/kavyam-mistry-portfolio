@@ -1,0 +1,512 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.625rem;
+        --background: 0.145 0 0;
+        --foreground: 0.985 0 0;
+        --card: 0.205 0 0;
+        --card-foreground: 0.985 0 0;
+        --popover: 0.269 0 0;
+        --popover-foreground: 0.985 0 0;
+        --primary: 0.922 0 0;
+        --primary-foreground: 0.205 0 0;
+        --secondary: 0.269 0 0;
+        --secondary-foreground: 0.985 0 0;
+        --muted: 0.269 0 0;
+        --muted-foreground: 0.708 0 0;
+        --accent: 0.371 0 0;
+        --accent-foreground: 0.985 0 0;
+        --destructive: 0.704 0.191 22.216;
+        --destructive-foreground: 0.205 0 0;
+        --border: 1 0 0 / 10%;
+        --input: 1 0 0 / 15%;
+        --ring: 0.556 0 0;
+        
+        /* Minecraft Theme Colors */
+        --minecraft-green: 0.65 0.18 145;
+        --minecraft-gold: 0.75 0.15 85;
+        --minecraft-cyan: 0.70 0.12 195;
+        --minecraft-black: 0.10 0 0;
+        
+        /* Minecraft Skin Colors - Extracted from character image */
+        --skin-blue: 0.55 0.20 240;
+        --skin-blue-light: 0.70 0.15 240;
+        --skin-white: 0.95 0.02 240;
+        --skin-tone-light: 0.80 0.08 50;
+        --skin-tone-dark: 0.65 0.10 45;
+    }
+
+    .dark {
+        --background: 0.145 0 0;
+        --foreground: 0.985 0 0;
+        --card: 0.205 0 0;
+        --card-foreground: 0.985 0 0;
+        --popover: 0.269 0 0;
+        --popover-foreground: 0.985 0 0;
+        --primary: 0.922 0 0;
+        --primary-foreground: 0.205 0 0;
+        --secondary: 0.269 0 0;
+        --secondary-foreground: 0.985 0 0;
+        --muted: 0.269 0 0;
+        --muted-foreground: 0.708 0 0;
+        --accent: 0.371 0 0;
+        --accent-foreground: 0.985 0 0;
+        --destructive: 0.704 0.191 22.216;
+        --destructive-foreground: 0.205 0 0;
+        --border: 1 0 0 / 10%;
+        --input: 1 0 0 / 15%;
+        --ring: 0.556 0 0;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-black text-foreground;
+        font-family: 'Courier New', monospace;
+    }
+}
+
+@layer components {
+    /* Minecraft Title Box with Gradient Border */
+    .minecraft-title-box {
+        padding: 1.5rem 2rem;
+        background: 
+            linear-gradient(135deg, rgba(0, 20, 40, 0.9), rgba(0, 40, 60, 0.8)),
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 4px,
+                rgba(100, 150, 255, 0.05) 4px,
+                rgba(100, 150, 255, 0.05) 8px
+            );
+        border: 4px solid transparent;
+        background-clip: padding-box;
+        position: relative;
+        box-shadow: 
+            0 0 0 3px #000,
+            inset 0 0 0 3px rgba(100, 150, 255, 0.15),
+            0 8px 24px rgba(100, 150, 255, 0.4);
+        min-height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .minecraft-title-box::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        background: linear-gradient(135deg, 
+            oklch(var(--skin-blue)) 0%, 
+            oklch(var(--minecraft-cyan)) 50%,
+            oklch(var(--minecraft-gold)) 100%
+        );
+        border-radius: inherit;
+        z-index: -1;
+    }
+    
+    .minecraft-title-box::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 8px,
+                rgba(100, 150, 255, 0.1) 8px,
+                rgba(100, 150, 255, 0.1) 16px
+            );
+        pointer-events: none;
+        image-rendering: pixelated;
+    }
+
+    /* Backup Control Styles */
+    .backup-control-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        background: rgba(0, 20, 40, 0.95);
+        border: 2px solid oklch(var(--skin-blue));
+        padding: 1rem;
+        box-shadow: 
+            0 0 0 2px #000,
+            0 4px 12px rgba(100, 150, 255, 0.4);
+    }
+
+    .backup-button {
+        background: rgba(0, 40, 60, 0.8);
+        border: 2px solid oklch(var(--skin-blue));
+        color: oklch(var(--skin-blue-light));
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .backup-button:hover {
+        background: rgba(0, 60, 80, 0.9);
+        border-color: oklch(var(--minecraft-gold));
+        color: oklch(var(--minecraft-gold));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(100, 150, 255, 0.5);
+    }
+
+    .backup-info {
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(100, 150, 255, 0.3);
+        text-align: center;
+    }
+
+    .backup-success-message {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        background: rgba(0, 60, 0, 0.9);
+        border: 2px solid oklch(var(--minecraft-green));
+        color: oklch(var(--minecraft-green));
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        box-shadow: 
+            0 0 0 2px #000,
+            0 4px 12px rgba(0, 255, 0, 0.3);
+        animation: slide-in 0.3s ease-out;
+    }
+
+    @keyframes slide-in {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .backup-dialog {
+        background: rgba(0, 20, 40, 0.98);
+        border: 3px solid oklch(var(--skin-blue));
+        box-shadow: 
+            0 0 0 2px #000,
+            0 8px 24px rgba(100, 150, 255, 0.5);
+    }
+
+    .backup-dialog-button {
+        background: rgba(0, 40, 60, 0.8);
+        border: 2px solid oklch(var(--skin-blue));
+        color: oklch(var(--skin-blue-light));
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+    }
+
+    .backup-dialog-button:hover {
+        background: rgba(0, 60, 80, 0.9);
+        border-color: oklch(var(--minecraft-gold));
+        color: oklch(var(--minecraft-gold));
+    }
+
+    .backup-dialog-button-primary {
+        background: rgba(0, 60, 0, 0.8);
+        border: 2px solid oklch(var(--minecraft-green));
+        color: oklch(var(--minecraft-green));
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+    }
+
+    .backup-dialog-button-primary:hover {
+        background: rgba(0, 80, 0, 0.9);
+        border-color: oklch(var(--minecraft-gold));
+        color: oklch(var(--minecraft-gold));
+    }
+
+    /* Minecraft Text Styling */
+    .minecraft-text {
+        text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+        letter-spacing: 0.05em;
+    }
+
+    /* Minecraft Border Effect */
+    .minecraft-border {
+        border: 4px solid oklch(var(--skin-blue));
+        box-shadow: 
+            0 0 0 2px #000,
+            inset 0 0 0 2px #000,
+            0 4px 8px rgba(100, 150, 255, 0.4);
+        image-rendering: pixelated;
+    }
+
+    .minecraft-shadow {
+        filter: drop-shadow(0 4px 12px rgba(100, 150, 255, 0.5));
+    }
+
+    /* Contact Icon Box - 2x5cm (approximately 75px x 189px at 96 DPI) */
+    .contact-icon-box {
+        width: 75px;
+        height: 189px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: 
+            linear-gradient(135deg, rgba(0, 40, 80, 0.2), rgba(0, 100, 200, 0.1)),
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 4px,
+                rgba(100, 150, 255, 0.05) 4px,
+                rgba(100, 150, 255, 0.05) 8px
+            );
+        border: 3px solid oklch(var(--skin-blue));
+        box-shadow: 
+            0 0 0 2px #000,
+            inset 0 0 0 2px rgba(100, 150, 255, 0.15),
+            0 4px 12px rgba(100, 150, 255, 0.4);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .contact-icon-box::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        border: 1px solid rgba(100, 150, 255, 0.2);
+        pointer-events: none;
+    }
+
+    .contact-icon-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+            0 0 0 2px #000,
+            inset 0 0 0 2px rgba(100, 150, 255, 0.3),
+            0 8px 20px rgba(100, 150, 255, 0.6);
+        border-color: oklch(var(--minecraft-gold));
+    }
+
+    /* About Me Box - 8x16m (approximately 302px x 604px at 96 DPI) */
+    .minecraft-box-large {
+        min-height: 604px;
+        padding: 2rem;
+        background: 
+            linear-gradient(135deg, rgba(0, 20, 40, 0.9), rgba(0, 40, 60, 0.8)),
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 8px,
+                rgba(100, 150, 255, 0.03) 8px,
+                rgba(100, 150, 255, 0.03) 16px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 8px,
+                rgba(100, 150, 255, 0.03) 8px,
+                rgba(100, 150, 255, 0.03) 16px
+            );
+        border: 4px solid oklch(var(--skin-blue));
+        box-shadow: 
+            0 0 0 3px #000,
+            inset 0 0 0 3px rgba(100, 150, 255, 0.15),
+            0 8px 24px rgba(100, 150, 255, 0.4);
+        position: relative;
+    }
+
+    .minecraft-box-large::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, 
+            oklch(var(--skin-blue)), 
+            oklch(var(--minecraft-cyan)), 
+            oklch(var(--minecraft-gold))
+        );
+    }
+    
+    .minecraft-box-large::after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 16px;
+        height: 16px;
+        background: oklch(var(--skin-blue));
+        opacity: 0.3;
+        box-shadow: 
+            calc(100% - 24px) 0 0 oklch(var(--skin-blue)),
+            0 calc(100% - 24px) 0 oklch(var(--skin-blue)),
+            calc(100% - 24px) calc(100% - 24px) 0 oklch(var(--skin-blue));
+    }
+
+    /* Experience/Skills Box - 4x8m (approximately 151px x 302px at 96 DPI) */
+    .minecraft-box-medium {
+        min-height: 302px;
+        padding: 1.5rem;
+        background: 
+            linear-gradient(135deg, rgba(0, 20, 40, 0.9), rgba(0, 40, 60, 0.8)),
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 8px,
+                rgba(100, 150, 255, 0.04) 8px,
+                rgba(100, 150, 255, 0.04) 16px
+            );
+        border: 4px solid oklch(var(--skin-blue));
+        box-shadow: 
+            0 0 0 3px #000,
+            inset 0 0 0 3px rgba(100, 150, 255, 0.15),
+            0 8px 24px rgba(100, 150, 255, 0.4);
+        position: relative;
+    }
+    
+    .minecraft-box-medium::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 12px;
+        height: 12px;
+        background: oklch(var(--skin-blue-light));
+        opacity: 0.4;
+        box-shadow: 
+            -16px 0 0 oklch(var(--skin-blue-light)),
+            -32px 0 0 oklch(var(--skin-blue-light));
+    }
+
+    /* Availability Box */
+    .minecraft-box-availability {
+        padding: 2rem;
+        background: 
+            linear-gradient(135deg, rgba(0, 40, 0, 0.4), rgba(0, 60, 60, 0.4)),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 12px,
+                rgba(255, 215, 0, 0.05) 12px,
+                rgba(255, 215, 0, 0.05) 24px
+            );
+        border: 4px solid oklch(var(--minecraft-gold));
+        box-shadow: 
+            0 0 0 3px #000,
+            inset 0 0 0 3px rgba(255, 215, 0, 0.15),
+            0 8px 24px rgba(255, 215, 0, 0.4);
+        position: relative;
+    }
+    
+    .minecraft-box-availability::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        border: 2px dashed rgba(255, 215, 0, 0.2);
+        pointer-events: none;
+    }
+
+    /* Item Box for lists */
+    .minecraft-item-box {
+        padding: 1rem;
+        background: 
+            rgba(0, 0, 0, 0.5),
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 4px,
+                rgba(100, 150, 255, 0.05) 4px,
+                rgba(100, 150, 255, 0.05) 8px
+            );
+        border: 2px solid rgba(100, 150, 255, 0.4);
+        box-shadow: inset 0 0 10px rgba(100, 150, 255, 0.15);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .minecraft-item-box::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 8px;
+        height: 8px;
+        background: oklch(var(--skin-blue));
+        opacity: 0.5;
+    }
+
+    .minecraft-item-box:hover {
+        border-color: oklch(var(--skin-blue));
+        background: 
+            rgba(0, 40, 60, 0.5),
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 4px,
+                rgba(100, 150, 255, 0.08) 4px,
+                rgba(100, 150, 255, 0.08) 8px
+            );
+        transform: translateX(4px);
+    }
+
+    /* Badge styling */
+    .minecraft-badge {
+        border: 1px solid rgba(100, 150, 255, 0.4);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+    }
+
+    /* Info Box */
+    .minecraft-info-box {
+        padding: 0.5rem 1rem;
+        background: 
+            rgba(0, 40, 60, 0.6),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 4px,
+                rgba(100, 150, 255, 0.1) 4px,
+                rgba(100, 150, 255, 0.1) 8px
+            );
+        border: 2px solid rgba(100, 150, 255, 0.4);
+        box-shadow: 0 2px 8px rgba(100, 150, 255, 0.3);
+    }
+}
+
+@layer utilities {
+    .text-minecraft-green {
+        color: oklch(var(--minecraft-green));
+    }
+
+    .text-minecraft-gold {
+        color: oklch(var(--minecraft-gold));
+    }
+
+    .border-minecraft-gold {
+        border-color: oklch(var(--minecraft-gold));
+    }
+    
+    .text-skin-blue {
+        color: oklch(var(--skin-blue-light));
+    }
+    
+    .border-skin-blue {
+        border-color: oklch(var(--skin-blue));
+    }
+}

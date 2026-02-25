@@ -1,0 +1,25 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-fix-the-frontend-registration-flow-in-registration-tsx-and-the-usequeries-ts-registration-hook-so-that-errors-from-the-backend-are-correctly-caught-surfaced-to-the-user-with-a-meaningful-message-and-successful-registration-transitions-the-user-to-the-login-page",
+      "featureTitle": "Fix the frontend registration flow in Registration.tsx and the useQueries.ts registration hook so that errors from the backend are correctly caught, surfaced to the user with a meaningful message, and successful registration transitions the user to the login page.",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/Registration.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

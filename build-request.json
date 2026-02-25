@@ -1,0 +1,61 @@
+{
+  "kind": "build_request",
+  "title": "Fix broken user registration (username/password)",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Investigate and fix the backend Motoko registration logic so that new users can successfully register with a username and password. Ensure the registerUser function correctly stores credentials, returns a success result, and does not throw or return an error under normal registration conditions.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ],
+        "quotes": [
+          "registration is not working and showing an error",
+          "it says [ registration failed. please try again. ]",
+          "its hepening for all"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new user can submit a username and password on the registration page without receiving 'Registration failed. Please try again.'",
+        "The backend returns a successful response when a valid, non-duplicate username and password are submitted",
+        "Duplicate username registration attempts return an appropriate error (not a canister trap)",
+        "The owner username 'Akgamer4354' remains blocked from registration"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Fix the frontend registration flow in Registration.tsx and the useQueries.ts registration hook so that errors from the backend are correctly caught, surfaced to the user with a meaningful message, and successful registration transitions the user to the login page.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-recent"
+        ],
+        "quotes": [
+          "registration is not working and showing an error",
+          "it says [ registration failed. please try again. ]"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Successful registration redirects the user to the login page",
+        "Backend error responses (e.g., username already taken) display a specific, readable error message instead of a generic fallback",
+        "Network or canister errors are caught and display a user-friendly error message",
+        "The registration button is disabled while the request is in-flight to prevent duplicate submissions"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the owner access control rule — only Akgamer4354 must receive the 'owner' role",
+    "Do not modify files in frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui"
+  ],
+  "nonGoals": [
+    "Adding Internet Identity or any third-party authentication method",
+    "Changing the login flow for existing users",
+    "Modifying the Owner dashboard or maintenance mode features"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

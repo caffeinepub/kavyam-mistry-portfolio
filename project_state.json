@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Web application with owner access control (only Akgamer4354 can access Owner page), portfolio page, and custom username/password authentication system. Registration is currently broken for all users.",
+  "architectural_notes": [
+    "Custom username/password authentication system (no Internet Identity)",
+    "Owner page restricted to Akgamer4354; all other users redirected to portfolio page"
+  ],
+  "known_issues": [
+    "Registration fails for all users with 'Registration failed. Please try again.' error"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-fix-the-frontend-registration-flow-in-registration-tsx-and-the-usequeries-ts-registration-hook-so-that-errors-from-the-backend-are-correctly-caught-surfaced-to-the-user-with-a-meaningful-message-and-successful-registration-transitions-the-user-to-the-login-page",
+      "title": "Fix the frontend registration flow in Registration.tsx and the useQueries.ts registration hook so that errors from the backend are correctly caught, surfaced to the user with a meaningful message, and successful registration transitions the user to the login page.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Investigate and fix the backend Motoko registration logic so that new users can successfully register with a username and password. Ensure the registerUser function correctly stores credentials, returns a success result, and does not throw or return an error under normal registration conditions.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Fix broken user registration (username/password)",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
