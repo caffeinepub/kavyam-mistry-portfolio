@@ -1,14 +1,24 @@
-# Specification
+# Kavyam Mistry Portfolio
 
-## Summary
-**Goal:** Fix the broken user registration flow so new users can successfully register with a username and password.
+## Current State
+A Minecraft-themed portfolio with custom username/password authentication. Login.tsx is the login page. CustomAuthWrapper handles routing between login/register/portfolio/owner pages. Portfolio sections are individual components (AboutMeSection, ExperienceSection, etc.).
 
-**Planned changes:**
-- Fix the backend Motoko `registerUser` function to correctly store credentials and return a success result without errors or canister traps
-- Ensure duplicate username attempts return an appropriate error response (not a trap), while keeping `Akgamer4354` blocked from registration
-- Fix the frontend `Registration.tsx` and `useQueries.ts` registration hook to correctly handle backend responses
-- Display specific, readable error messages for known errors (e.g., username already taken) and user-friendly messages for network/canister errors
-- Redirect users to the login page upon successful registration
-- Disable the registration button while the request is in-flight to prevent duplicate submissions
+## Requested Changes (Diff)
 
-**User-visible outcome:** New users can register with a username and password without seeing "Registration failed. Please try again." — successful registration redirects to the login page, and meaningful error messages are shown for issues like duplicate usernames.
+### Add
+- MinecraftCursorEffect component: enchanting table floating particles + Minecraft block pixels that appear/fade on cursor movement, shown only on Login page
+- ScrollReveal wrapper/hook for portfolio sections: 3D depth zoom-in effect + glitch/distortion effect when sections scroll into view
+
+### Modify
+- Login.tsx: integrate MinecraftCursorEffect component
+- App.tsx portfolio sections: wrap each section with scroll reveal animation
+
+### Remove
+- Nothing removed
+
+## Implementation Plan
+1. Create MinecraftCursorEffect.tsx — canvas overlay on login page tracking mouse, emitting enchanting table rune particles and pixelated block particles that fade out
+2. Add the cursor effect to Login.tsx
+3. Create useScrollReveal hook using IntersectionObserver
+4. Add CSS keyframes for 3D depth (perspective + scale/translateZ) and glitch (clip-path distortion + color shift) animations
+5. Wrap each portfolio section in App.tsx with scroll reveal div
