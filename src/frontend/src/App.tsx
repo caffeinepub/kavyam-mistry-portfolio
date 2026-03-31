@@ -11,6 +11,7 @@ import SkillsSection from "./components/SkillsSection";
 import { useGetMaintenanceMode, useLogVisit } from "./hooks/useQueries";
 import Owner from "./pages/Owner";
 import OwnerLogin from "./pages/OwnerLogin";
+import PricingPage from "./pages/PricingPage";
 
 function Portfolio() {
   const logVisit = useLogVisit();
@@ -58,12 +59,22 @@ function Portfolio() {
 function isOwnerLoginRoute(): boolean {
   const hash = window.location.hash;
   const pathname = window.location.pathname;
-  // Support both hash-based (#/owner/login) and path-based (/owner/login) navigation
   return (
     hash === "#/owner/login" ||
     hash.startsWith("#/owner/login") ||
     pathname === "/owner/login" ||
     pathname.endsWith("/owner/login")
+  );
+}
+
+function isPricingRoute(): boolean {
+  const hash = window.location.hash;
+  const pathname = window.location.pathname;
+  return (
+    hash === "#/pricing" ||
+    hash.startsWith("#/pricing") ||
+    pathname === "/pricing" ||
+    pathname.endsWith("/pricing")
   );
 }
 
@@ -74,11 +85,15 @@ function AppContent() {
   const [isOwner, setIsOwner] = useState(
     () => sessionStorage.getItem("owner_session") === "true",
   );
+  const [showPricing, setShowPricing] = useState(() => isPricingRoute());
 
   const { data: maintenanceMode = false } = useGetMaintenanceMode();
 
   useEffect(() => {
-    const handler = () => setShowOwnerLogin(isOwnerLoginRoute());
+    const handler = () => {
+      setShowOwnerLogin(isOwnerLoginRoute());
+      setShowPricing(isPricingRoute());
+    };
     window.addEventListener("hashchange", handler);
     window.addEventListener("popstate", handler);
     return () => {
@@ -109,6 +124,17 @@ function AppContent() {
 
   if (showOwnerLogin) {
     return <OwnerLogin onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  if (showPricing) {
+    return (
+      <PricingPage
+        onBack={() => {
+          setShowPricing(false);
+          window.location.hash = "";
+        }}
+      />
+    );
   }
 
   if (maintenanceMode) {

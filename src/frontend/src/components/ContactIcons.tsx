@@ -1,4 +1,4 @@
-import { Mail, Trophy, X } from "lucide-react";
+import { Mail, ShoppingBag, Trophy, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { SiDiscord, SiYoutube } from "react-icons/si";
@@ -219,11 +219,12 @@ export default function ContactIcons() {
 
   return (
     <>
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
         <a
-          href="mailto:mistrykavyam30@gmail.com"
+          href="mailto:buisnessak4354@gmail.com"
           className="contact-icon-box group"
-          title="Email: mistrykavyam30@gmail.com"
+          title="Email: buisnessak4354@gmail.com"
+          data-ocid="contact.email.link"
         >
           <div className="flex flex-col items-center justify-center h-full">
             <Mail className="w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors" />
@@ -237,6 +238,7 @@ export default function ContactIcons() {
           rel="noopener noreferrer"
           className="contact-icon-box group"
           title="YouTube: @akgamer1234"
+          data-ocid="contact.youtube.link"
         >
           <div className="flex flex-col items-center justify-center h-full">
             <SiYoutube className="w-5 h-5 text-cyan-400 group-hover:text-red-500 transition-colors" />
@@ -250,6 +252,7 @@ export default function ContactIcons() {
           rel="noopener noreferrer"
           className="contact-icon-box group"
           title="Discord"
+          data-ocid="contact.discord.link"
         >
           <div className="flex flex-col items-center justify-center h-full">
             <SiDiscord className="w-5 h-5 text-cyan-400 group-hover:text-indigo-400 transition-colors" />
@@ -262,11 +265,29 @@ export default function ContactIcons() {
           onClick={() => setShowTier(true)}
           className="contact-icon-box group"
           title="Akgamer4354's Tier"
+          data-ocid="contact.tier.button"
         >
           <div className="flex flex-col items-center justify-center h-full">
             <Trophy className="w-5 h-5 text-cyan-400 group-hover:text-yellow-400 transition-colors" />
             <span className="text-xs text-gray-400 mt-1 text-center leading-tight px-1">
               Akgamer4354's tier
+            </span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.hash = "#/pricing";
+          }}
+          className="contact-icon-box group"
+          title="View Pricing"
+          data-ocid="contact.pricing.button"
+        >
+          <div className="flex flex-col items-center justify-center h-full">
+            <ShoppingBag className="w-5 h-5 text-cyan-400 group-hover:text-yellow-400 transition-colors" />
+            <span className="text-xs text-gray-400 mt-1 text-center leading-tight px-1">
+              Pricing
             </span>
           </div>
         </button>
