@@ -1,9 +1,12 @@
-import { Mail, ShoppingBag, Trophy, X } from "lucide-react";
+import { Mail, RefreshCw, ShoppingBag, Trophy, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { SiDiscord, SiYoutube } from "react-icons/si";
+import { useMCTierData } from "../hooks/useMCTierData";
 
 function TierModal({ onClose }: { onClose: () => void }) {
+  const tierData = useMCTierData();
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -15,6 +18,14 @@ function TierModal({ onClose }: { onClose: () => void }) {
       document.body.style.overflow = "";
     };
   }, [onClose]);
+
+  const tierIconSrc = (name: string) => {
+    if (name === "crystal")
+      return "/assets/image-019d4261-a6b1-76cf-b5ba-fa91a236c4d6.png";
+    if (name === "mace")
+      return "/assets/image-019d4261-a6bd-71d8-baa6-773f4950ddb2.png";
+    return `https://mctier.com/tier_icons/${name}.svg`;
+  };
 
   return createPortal(
     <div
@@ -63,7 +74,12 @@ function TierModal({ onClose }: { onClose: () => void }) {
               background: "rgba(107,114,128,0.3)",
             }}
           >
-            🏅 Rookie
+            {tierData.loading ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              "🏅"
+            )}{" "}
+            {tierData.title}
           </h2>
           <h3 className="text-base font-bold text-slate-400">Asia</h3>
 
@@ -118,6 +134,7 @@ function TierModal({ onClose }: { onClose: () => void }) {
           </a>
         </div>
 
+        {/* POSITION */}
         <div className="w-full mb-4">
           <h2 className="text-lg text-slate-400 font-medium mb-2">POSITION</h2>
           <div
@@ -136,17 +153,24 @@ function TierModal({ onClose }: { onClose: () => void }) {
                 (e.target as HTMLImageElement).style.display = "none";
               }}
             />
-            <strong className="text-3xl italic text-white drop-shadow">
-              79466.
-            </strong>
+            {tierData.loading ? (
+              <RefreshCw className="w-6 h-6 text-slate-400 animate-spin" />
+            ) : (
+              <strong className="text-3xl italic text-white drop-shadow">
+                {tierData.position.toLocaleString()}.
+              </strong>
+            )}
             <div className="flex flex-col">
               <strong className="text-lg text-white">OVERALL</strong>
-              <span className="text-sm text-slate-400">(2 points)</span>
+              <span className="text-sm text-slate-400">
+                ({tierData.loading ? "..." : `${tierData.points} points`})
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="w-full mb-5">
+        {/* TIERS */}
+        <div className="w-full mb-4">
           <h2 className="text-lg text-slate-400 font-medium mb-2">TIERS</h2>
           <div
             className="flex gap-3 px-3 py-2 rounded-lg"
@@ -155,50 +179,48 @@ function TierModal({ onClose }: { onClose: () => void }) {
               border: "1px solid rgba(100,150,255,0.3)",
             }}
           >
-            {/* Crystal tier */}
-            <div className="w-10 h-14 relative flex flex-col items-center">
-              <span
-                className="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center overflow-clip border-2 p-1"
-                style={{ borderColor: "#6b7280" }}
-              >
-                <img
-                  width="20"
-                  height="20"
-                  className="object-contain"
-                  alt="crystal"
-                  src="/assets/image-019d4261-a6b1-76cf-b5ba-fa91a236c4d6.png"
-                />
-              </span>
-              <strong
-                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs px-1 rounded-lg w-9 text-center"
-                style={{ background: "#4b5563", color: "#e5e7eb" }}
-              >
-                LT5
-              </strong>
-            </div>
-            {/* Mace tier */}
-            <div className="w-10 h-14 relative flex flex-col items-center">
-              <span
-                className="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center overflow-clip border-2 p-1"
-                style={{ borderColor: "#6b7280" }}
-              >
-                <img
-                  width="20"
-                  height="20"
-                  className="object-contain"
-                  alt="mace"
-                  src="/assets/image-019d4261-a6bd-71d8-baa6-773f4950ddb2.png"
-                />
-              </span>
-              <strong
-                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs px-1 rounded-lg w-9 text-center"
-                style={{ background: "#4b5563", color: "#e5e7eb" }}
-              >
-                LT5
-              </strong>
-            </div>
+            {tierData.loading ? (
+              <div className="flex items-center gap-2 text-slate-400 text-sm">
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                Loading tiers...
+              </div>
+            ) : (
+              tierData.tiers.map((tier) => (
+                <div
+                  key={tier.name}
+                  className="w-10 h-14 relative flex flex-col items-center"
+                >
+                  <span
+                    className="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center overflow-clip border-2 p-1"
+                    style={{ borderColor: "#6b7280" }}
+                  >
+                    <img
+                      width="20"
+                      height="20"
+                      className="object-contain"
+                      alt={tier.name}
+                      src={tierIconSrc(tier.name)}
+                    />
+                  </span>
+                  <strong
+                    className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs px-1 rounded-lg w-9 text-center"
+                    style={{ background: "#4b5563", color: "#e5e7eb" }}
+                  >
+                    {tier.rating}
+                  </strong>
+                </div>
+              ))
+            )}
           </div>
         </div>
+
+        {/* Last updated */}
+        {tierData.lastUpdated && (
+          <p className="text-center text-xs text-slate-500 mb-3">
+            {tierData.error ? "⚠ Using cached data" : "✓ Live data"} · updated{" "}
+            {tierData.lastUpdated.toLocaleTimeString()}
+          </p>
+        )}
 
         <a
           href="https://mctiers.com/rankings/overall"
