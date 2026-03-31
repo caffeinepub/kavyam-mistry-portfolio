@@ -4,6 +4,7 @@ import AvailabilitySection from "./components/AvailabilitySection";
 import ContactIcons from "./components/ContactIcons";
 import ExperienceSection from "./components/ExperienceSection";
 import Footer from "./components/Footer";
+import HerobrineStormBackground from "./components/HerobrineStormBackground";
 import MaintenanceScreen from "./components/MaintenanceScreen";
 import ProfileHeader from "./components/ProfileHeader";
 import ScrollRevealSection from "./components/ScrollRevealSection";
@@ -23,35 +24,39 @@ function Portfolio() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-cyan-400">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <ScrollRevealSection>
-          <ProfileHeader />
-        </ScrollRevealSection>
+    <div className="relative min-h-screen text-cyan-400">
+      <HerobrineStormBackground />
 
-        <ScrollRevealSection delay={50}>
-          <ContactIcons />
-        </ScrollRevealSection>
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
+          <ScrollRevealSection>
+            <ProfileHeader />
+          </ScrollRevealSection>
 
-        <ScrollRevealSection delay={100}>
-          <AboutMeSection />
-        </ScrollRevealSection>
+          <ScrollRevealSection delay={50}>
+            <ContactIcons />
+          </ScrollRevealSection>
 
-        <ScrollRevealSection delay={200}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <ExperienceSection />
-            <SkillsSection />
-          </div>
-        </ScrollRevealSection>
+          <ScrollRevealSection delay={100}>
+            <AboutMeSection />
+          </ScrollRevealSection>
 
-        <ScrollRevealSection delay={300}>
-          <AvailabilitySection />
+          <ScrollRevealSection delay={200}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <ExperienceSection />
+              <SkillsSection />
+            </div>
+          </ScrollRevealSection>
+
+          <ScrollRevealSection delay={300}>
+            <AvailabilitySection />
+          </ScrollRevealSection>
+        </div>
+
+        <ScrollRevealSection delay={400}>
+          <Footer />
         </ScrollRevealSection>
       </div>
-
-      <ScrollRevealSection delay={400}>
-        <Footer />
-      </ScrollRevealSection>
     </div>
   );
 }
