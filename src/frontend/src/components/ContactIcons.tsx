@@ -155,6 +155,28 @@ function TierModal({ onClose }: { onClose: () => void }) {
               border: "1px solid rgba(100,150,255,0.3)",
             }}
           >
+            {/* Crystal tier */}
+            <div className="w-10 h-14 relative flex flex-col items-center">
+              <span
+                className="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center overflow-clip border-2 p-1"
+                style={{ borderColor: "#6b7280" }}
+              >
+                <img
+                  width="20"
+                  height="20"
+                  className="object-contain"
+                  alt="crystal"
+                  src="/assets/image-019d4261-a6b1-76cf-b5ba-fa91a236c4d6.png"
+                />
+              </span>
+              <strong
+                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs px-1 rounded-lg w-9 text-center"
+                style={{ background: "#4b5563", color: "#e5e7eb" }}
+              >
+                LT5
+              </strong>
+            </div>
+            {/* Mace tier */}
             <div className="w-10 h-14 relative flex flex-col items-center">
               <span
                 className="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center overflow-clip border-2 p-1"
@@ -165,33 +187,7 @@ function TierModal({ onClose }: { onClose: () => void }) {
                   height="20"
                   className="object-contain"
                   alt="mace"
-                  src="https://mctier.com/tier_icons/mace.svg"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              </span>
-              <strong
-                className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs px-1 rounded-lg w-9 text-center"
-                style={{ background: "#4b5563", color: "#e5e7eb" }}
-              >
-                LT5
-              </strong>
-            </div>
-            <div className="w-10 h-14 relative flex flex-col items-center">
-              <span
-                className="w-8 h-8 bg-black/50 rounded-full flex items-center justify-center overflow-clip border-2 p-1"
-                style={{ borderColor: "#6b7280" }}
-              >
-                <img
-                  width="20"
-                  height="20"
-                  className="object-contain"
-                  alt="vanilla"
-                  src="https://mctier.com/tier_icons/vanilla.svg"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
+                  src="/assets/image-019d4261-a6bd-71d8-baa6-773f4950ddb2.png"
                 />
               </span>
               <strong
