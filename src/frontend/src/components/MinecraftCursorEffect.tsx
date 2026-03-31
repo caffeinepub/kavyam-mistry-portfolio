@@ -1,5 +1,40 @@
 import { useEffect, useRef } from "react";
 
+// Standard Galactic Alphabet characters (approximated with unicode)
+// These are the same cryptic symbols seen floating from bookshelves near enchanting tables
+const SGA_CHARS = [
+  "ᔑ",
+  "ᗑ",
+  "ᒲ",
+  "ᓵ",
+  "↸",
+  "ᐑ",
+  "⚍",
+  "⎓",
+  "⌇",
+  "꧹",
+  "ᒷ",
+  "ᓭ",
+  "ᑑ",
+  "ꖌ",
+  "ꖎ",
+  "ꖌ",
+  "ᒲ",
+  "⍊",
+  "∷",
+  "⌦",
+  "⚶",
+  "⍙",
+  "⌂",
+  "⎗",
+  "⌀",
+  "⍾",
+  "⌁",
+  "⍡",
+  "⌬",
+  "⍫",
+];
+
 interface Particle {
   x: number;
   y: number;
@@ -7,26 +42,13 @@ interface Particle {
   vy: number;
   life: number;
   maxLife: number;
-  type: "rune" | "pixel";
-  char?: string;
-  color: string;
+  char: string;
   size: number;
 }
-
-const RUNES = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ";
-const PIXEL_COLORS = [
-  "#00ffff",
-  "#00ff44",
-  "#ffaa00",
-  "#aa00ff",
-  "#ff00ff",
-  "#00ccff",
-];
 
 export default function MinecraftCursorEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -43,39 +65,19 @@ export default function MinecraftCursorEffect() {
     window.addEventListener("resize", resize);
 
     const onMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-
-      // Spawn enchanting rune particles
-      for (let i = 0; i < 2; i++) {
-        const rune = RUNES[Math.floor(Math.random() * RUNES.length)];
+      // Spawn 1-2 SGA rune particles per move event - gray enchanting table particles
+      const count = Math.random() > 0.4 ? 2 : 1;
+      for (let i = 0; i < count; i++) {
+        const char = SGA_CHARS[Math.floor(Math.random() * SGA_CHARS.length)];
         particlesRef.current.push({
-          x: e.clientX + (Math.random() - 0.5) * 20,
-          y: e.clientY + (Math.random() - 0.5) * 20,
-          vx: (Math.random() - 0.5) * 1.5,
-          vy: -(Math.random() * 1.5 + 0.5),
-          life: 80,
-          maxLife: 80,
-          type: "rune",
-          char: rune,
-          color: Math.random() > 0.5 ? "#cc44ff" : "#aa00ff",
-          size: Math.random() * 6 + 10,
-        });
-      }
-
-      // Spawn block pixel particles
-      for (let i = 0; i < 3; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 3 + 1;
-        particlesRef.current.push({
-          x: e.clientX,
-          y: e.clientY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 30,
-          maxLife: 30,
-          type: "pixel",
-          color: PIXEL_COLORS[Math.floor(Math.random() * PIXEL_COLORS.length)],
-          size: Math.floor(Math.random() * 5) + 6,
+          x: e.clientX + (Math.random() - 0.5) * 18,
+          y: e.clientY + (Math.random() - 0.5) * 18,
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: -(Math.random() * 1.8 + 0.4),
+          life: 70,
+          maxLife: 70,
+          char,
+          size: Math.random() * 5 + 10,
         });
       }
     };
@@ -83,35 +85,29 @@ export default function MinecraftCursorEffect() {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       particlesRef.current = particlesRef.current.filter((p) => p.life > 0);
 
       for (const p of particlesRef.current) {
         const alpha = p.life / p.maxLife;
         p.x += p.vx;
         p.y += p.vy;
+        // Slight drift / wobble
+        p.vx += (Math.random() - 0.5) * 0.08;
         p.life--;
 
-        if (p.type === "rune") {
-          ctx.save();
-          ctx.globalAlpha = alpha;
-          ctx.font = `bold ${p.size}px 'Courier New', monospace`;
-          ctx.fillStyle = p.color;
-          ctx.shadowColor = p.color;
-          ctx.shadowBlur = 8 * alpha;
-          ctx.fillText(p.char!, p.x, p.y);
-          ctx.restore();
-        } else {
-          ctx.save();
-          ctx.globalAlpha = alpha;
-          ctx.fillStyle = p.color;
-          ctx.shadowColor = p.color;
-          ctx.shadowBlur = 6 * alpha;
-          // Pixel-perfect square
-          const s = Math.round(p.size);
-          ctx.fillRect(Math.round(p.x - s / 2), Math.round(p.y - s / 2), s, s);
-          ctx.restore();
-        }
+        // Gray color - like the enchanting table bookshelf particles
+        // Slightly lighter as they fade for a ghost-like feel
+        const grayVal = Math.floor(140 + 60 * alpha);
+        const color = `rgba(${grayVal}, ${grayVal}, ${grayVal + 10}, ${alpha})`;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.font = `bold ${p.size}px 'Courier New', monospace`;
+        ctx.fillStyle = color;
+        ctx.shadowColor = `rgba(180, 180, 200, ${alpha * 0.6})`;
+        ctx.shadowBlur = 4 * alpha;
+        ctx.fillText(p.char, p.x, p.y);
+        ctx.restore();
       }
 
       rafRef.current = requestAnimationFrame(animate);

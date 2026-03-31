@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { RegisterResult } from "../backend";
 import { useActor } from "./useActor";
 
 export function useGetMaintenanceMode() {
@@ -9,7 +8,7 @@ export function useGetMaintenanceMode() {
     queryKey: ["maintenanceMode"],
     queryFn: async () => {
       if (!actor) return false;
-      return actor.getMaintenanceMode();
+      return (actor as any).getMaintenanceMode();
     },
     enabled: !!actor && !isFetching,
     refetchInterval: 10000,
@@ -23,7 +22,7 @@ export function useToggleMaintenanceMode() {
   return useMutation({
     mutationFn: async () => {
       if (!actor) throw new Error("Actor not available");
-      return actor.toggleMaintenanceMode();
+      return (actor as any).toggleMaintenanceMode();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["maintenanceMode"] });
@@ -31,39 +30,26 @@ export function useToggleMaintenanceMode() {
   });
 }
 
-export function useRegisterUser() {
+export function useLogVisit() {
   const { actor } = useActor();
 
-  return useMutation<
-    RegisterResult,
-    Error,
-    { username: string; password: string }
-  >({
-    mutationFn: async ({
-      username,
-      password,
-    }: { username: string; password: string }) => {
-      if (!actor) throw new Error("Actor not available");
-      const result = await actor.registerUser(username, password);
-      // Surface backend errors as thrown exceptions so React Query treats them as failures
-      if (result.__kind__ === "error") {
-        throw new Error(result.error);
-      }
-      return result;
+  return useMutation({
+    mutationFn: async () => {
+      if (!actor) return;
+      await (actor as any).logVisit();
     },
   });
 }
 
-export function useAuthenticateUser() {
-  const { actor } = useActor();
+export function useGetVisits() {
+  const { actor, isFetching } = useActor();
 
-  return useMutation({
-    mutationFn: async ({
-      username,
-      password,
-    }: { username: string; password: string }) => {
-      if (!actor) throw new Error("Actor not available");
-      return actor.authenticate(username, password);
+  return useQuery<bigint[]>({
+    queryKey: ["visits"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return (actor as any).getVisits();
     },
+    enabled: !!actor && !isFetching,
   });
 }

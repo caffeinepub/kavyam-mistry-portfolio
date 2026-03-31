@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   useGetMaintenanceMode,
+  useGetVisits,
   useToggleMaintenanceMode,
 } from "@/hooks/useQueries";
 import {
@@ -22,12 +23,14 @@ import {
 } from "@/utils/backup";
 import {
   AlertCircle,
+  Clock,
   Download,
   Loader2,
   LogOut,
   RefreshCw,
   Save,
   Upload,
+  Users,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -39,6 +42,7 @@ export default function Owner({ onLogout }: OwnerProps) {
   const { data: maintenanceMode = false, isLoading: maintenanceLoading } =
     useGetMaintenanceMode();
   const toggleMaintenance = useToggleMaintenanceMode();
+  const { data: visits = [], isLoading: visitsLoading } = useGetVisits();
 
   const [backupInfo, setBackupInfo] = useState(getBackupInfo());
   const [backupSuccess, setBackupSuccess] = useState(false);
@@ -65,9 +69,12 @@ export default function Owner({ onLogout }: OwnerProps) {
     downloadBackup();
   };
 
+  const visitDates = [...visits]
+    .reverse()
+    .map((ts) => new Date(Number(ts) / 1_000_000).toLocaleString());
+
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
       <header className="border-b-4 border-cyan-700 bg-black/90 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
         <div>
           <h1 className="text-2xl font-bold minecraft-text">
@@ -79,6 +86,7 @@ export default function Owner({ onLogout }: OwnerProps) {
           </p>
         </div>
         <Button
+          data-ocid="owner.button"
           onClick={onLogout}
           variant="outline"
           size="sm"
@@ -90,7 +98,63 @@ export default function Owner({ onLogout }: OwnerProps) {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
-        {/* ── Maintenance Mode ── */}
+        {/* Visitor History */}
+        <section>
+          <div className="minecraft-box-medium p-6">
+            <h2 className="text-xl font-bold text-cyan-300 minecraft-text mb-4 flex items-center gap-2">
+              <Users className="w-5 h-5" /> Visitor History
+            </h2>
+
+            <div className="flex items-center gap-4 mb-4">
+              <div className="px-4 py-2 border-2 border-cyan-600 bg-cyan-950/30">
+                <span className="text-cyan-300 minecraft-text font-bold text-lg">
+                  {visitsLoading ? "..." : visits.length}
+                </span>
+                <span className="text-gray-400 minecraft-text text-sm ml-2">
+                  Total Visits
+                </span>
+              </div>
+            </div>
+
+            {visitsLoading ? (
+              <div
+                data-ocid="owner.loading_state"
+                className="flex items-center gap-2 text-gray-400"
+              >
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="minecraft-text text-sm">
+                  Loading visits...
+                </span>
+              </div>
+            ) : visitDates.length === 0 ? (
+              <div
+                data-ocid="owner.empty_state"
+                className="text-gray-500 minecraft-text text-sm border border-gray-800 px-4 py-3"
+              >
+                No visits recorded yet.
+              </div>
+            ) : (
+              <div
+                data-ocid="owner.list"
+                className="max-h-64 overflow-y-auto border-2 border-cyan-900 bg-black/50"
+              >
+                {visitDates.map((date) => (
+                  <div
+                    key={date}
+                    className="flex items-center gap-3 px-4 py-2 border-b border-cyan-950 hover:bg-cyan-950/20 transition-colors"
+                  >
+                    <Clock className="w-3 h-3 text-cyan-700 flex-shrink-0" />
+                    <span className="text-cyan-400 minecraft-text text-xs">
+                      {date}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Maintenance Mode */}
         <section>
           <div className="minecraft-box-medium p-6">
             <h2 className="text-xl font-bold text-cyan-300 minecraft-text mb-4 flex items-center gap-2">
@@ -111,6 +175,7 @@ export default function Owner({ onLogout }: OwnerProps) {
                     : "🟢 OFF"}
               </div>
               <Button
+                data-ocid="owner.toggle"
                 onClick={handleToggleMaintenance}
                 disabled={toggleMaintenance.isPending || maintenanceLoading}
                 className="backup-button"
@@ -136,7 +201,7 @@ export default function Owner({ onLogout }: OwnerProps) {
           </div>
         </section>
 
-        {/* ── Backup Controls ── */}
+        {/* Backup Controls */}
         <section>
           <div className="minecraft-box-medium p-6">
             <h2 className="text-xl font-bold text-cyan-300 minecraft-text mb-4 flex items-center gap-2">
@@ -152,6 +217,7 @@ export default function Owner({ onLogout }: OwnerProps) {
 
             <div className="flex flex-wrap gap-3">
               <Button
+                data-ocid="owner.primary_button"
                 onClick={handleCreateBackup}
                 variant="outline"
                 size="sm"
@@ -163,6 +229,7 @@ export default function Owner({ onLogout }: OwnerProps) {
 
               {backupInfo && (
                 <Button
+                  data-ocid="owner.secondary_button"
                   onClick={handleDownloadBackup}
                   variant="outline"
                   size="sm"
@@ -177,6 +244,7 @@ export default function Owner({ onLogout }: OwnerProps) {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
+                      data-ocid="owner.open_modal_button"
                       variant="outline"
                       size="sm"
                       className="backup-button"
@@ -200,10 +268,14 @@ export default function Owner({ onLogout }: OwnerProps) {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className="backup-dialog-button">
+                      <AlertDialogCancel
+                        data-ocid="owner.cancel_button"
+                        className="backup-dialog-button"
+                      >
                         Cancel
                       </AlertDialogCancel>
                       <AlertDialogAction
+                        data-ocid="owner.confirm_button"
                         onClick={handleRestoreBackup}
                         className="backup-dialog-button-primary"
                       >
