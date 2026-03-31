@@ -137,7 +137,7 @@ function ServiceCard({
             letterSpacing: "0.08em",
           }}
         >
-          \u2605 MOST POPULAR
+          {"★ MOST POPULAR"}
         </div>
       )}
 
