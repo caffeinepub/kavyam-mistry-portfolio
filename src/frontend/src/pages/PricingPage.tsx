@@ -235,7 +235,7 @@ function ServiceCard({
           onMouseEnter={() => setIsOrderHovered(true)}
           onMouseLeave={() => setIsOrderHovered(false)}
         >
-          Order Now
+          Hire Now
         </button>
       </div>
     </motion.div>
@@ -302,7 +302,7 @@ export default function PricingPage({ onBack }: { onBack: () => void }) {
             textShadow: "2px 2px 0 rgba(0,0,0,0.8)",
           }}
         >
-          \u2692 Services &amp; Pricing
+          Services &amp; Pricing
         </h1>
       </div>
 
@@ -322,7 +322,7 @@ export default function PricingPage({ onBack }: { onBack: () => void }) {
               letterSpacing: "0.06em",
             }}
           >
-            \u2692 SERVER DEVELOPMENT SERVICES
+            SERVER DEVELOPMENT SERVICES
           </h2>
 
           <div
@@ -350,7 +350,7 @@ export default function PricingPage({ onBack }: { onBack: () => void }) {
             </span>
             . Click{" "}
             <span style={{ color: "rgba(76,175,80,0.95)", fontWeight: "bold" }}>
-              Order Now
+              Hire Now
             </span>{" "}
             on any plan to get started via Gmail.
           </p>

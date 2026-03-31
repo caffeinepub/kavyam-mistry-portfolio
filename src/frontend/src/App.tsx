@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import AboutMeSection from "./components/AboutMeSection";
 import AvailabilitySection from "./components/AvailabilitySection";
 import ContactIcons from "./components/ContactIcons";
+import EntryGateAnimation from "./components/EntryGateAnimation";
 import ExperienceSection from "./components/ExperienceSection";
 import Footer from "./components/Footer";
 import HerobrineStormBackground from "./components/HerobrineStormBackground";
@@ -91,6 +92,10 @@ function AppContent() {
     () => sessionStorage.getItem("owner_session") === "true",
   );
   const [showPricing, setShowPricing] = useState(() => isPricingRoute());
+  // Gate animation: always show on every page load/reload (no session skip)
+  const [showGate, setShowGate] = useState(
+    () => !isOwnerLoginRoute() && !isPricingRoute(),
+  );
 
   const { data: maintenanceMode = false } = useGetMaintenanceMode();
 
@@ -146,7 +151,12 @@ function AppContent() {
     return <MaintenanceScreen />;
   }
 
-  return <Portfolio />;
+  return (
+    <>
+      {showGate && <EntryGateAnimation onComplete={() => setShowGate(false)} />}
+      <Portfolio />
+    </>
+  );
 }
 
 export default function App() {
