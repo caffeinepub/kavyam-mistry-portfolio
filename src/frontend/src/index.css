@@ -245,10 +245,10 @@
     filter: drop-shadow(0 4px 12px rgba(100, 150, 255, 0.5));
   }
 
-  /* Contact Icon Box - 2x5cm (approximately 75px x 189px at 96 DPI) */
+  /* Contact Icon Box - compact size */
   .contact-icon-box {
-    width: 75px;
-    height: 189px;
+    width: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;

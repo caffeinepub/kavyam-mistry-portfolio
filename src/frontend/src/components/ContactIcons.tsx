@@ -226,7 +226,7 @@ export default function ContactIcons() {
           title="Email: mistrykavyam30@gmail.com"
         >
           <div className="flex flex-col items-center justify-center h-full">
-            <Mail className="w-8 h-8 text-cyan-400 group-hover:text-cyan-300 transition-colors" />
+            <Mail className="w-5 h-5 text-cyan-400 group-hover:text-cyan-300 transition-colors" />
             <span className="text-xs text-gray-400 mt-1">Email</span>
           </div>
         </a>
@@ -239,7 +239,7 @@ export default function ContactIcons() {
           title="YouTube: @akgamer1234"
         >
           <div className="flex flex-col items-center justify-center h-full">
-            <SiYoutube className="w-8 h-8 text-cyan-400 group-hover:text-red-500 transition-colors" />
+            <SiYoutube className="w-5 h-5 text-cyan-400 group-hover:text-red-500 transition-colors" />
             <span className="text-xs text-gray-400 mt-1">YouTube</span>
           </div>
         </a>
@@ -252,7 +252,7 @@ export default function ContactIcons() {
           title="Discord"
         >
           <div className="flex flex-col items-center justify-center h-full">
-            <SiDiscord className="w-8 h-8 text-cyan-400 group-hover:text-indigo-400 transition-colors" />
+            <SiDiscord className="w-5 h-5 text-cyan-400 group-hover:text-indigo-400 transition-colors" />
             <span className="text-xs text-gray-400 mt-1">Discord</span>
           </div>
         </a>
@@ -264,7 +264,7 @@ export default function ContactIcons() {
           title="Akgamer4354's Tier"
         >
           <div className="flex flex-col items-center justify-center h-full">
-            <Trophy className="w-8 h-8 text-cyan-400 group-hover:text-yellow-400 transition-colors" />
+            <Trophy className="w-5 h-5 text-cyan-400 group-hover:text-yellow-400 transition-colors" />
             <span className="text-xs text-gray-400 mt-1 text-center leading-tight px-1">
               Akgamer4354's tier
             </span>
