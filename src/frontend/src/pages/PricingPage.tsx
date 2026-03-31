@@ -235,7 +235,7 @@ function ServiceCard({
           onMouseEnter={() => setIsOrderHovered(true)}
           onMouseLeave={() => setIsOrderHovered(false)}
         >
-          \u2694 Order Now
+          Order Now
         </button>
       </div>
     </motion.div>
